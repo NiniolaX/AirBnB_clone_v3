@@ -68,8 +68,8 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
+class TestDBStorage(unittest.TestCase):
+    """Test the DBStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
@@ -86,3 +86,26 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test that get returns an object"""
+        # Get a storage object
+        obj = max(models.storage.all().values(), key=lambda x: x.created_at)
+        obj_class = obj.__class__
+        # Test that object returned is same as obj
+        self.assertIs(obj, models.storage.get(obj_class, obj.id))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_with_class(self):
+        """Test the count method with class argument"""
+        state_count = len(models.storage.all(State))
+        self.assertEqual(state_count, models.storage.count(State))
+        city_count = len(models.storage.all(City))
+        self.assertEqual(city_count, models.storage.count(City))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_without_class(self):
+        """ Test the count method without class argument"""
+        obj_count = len(models.storage.all())
+        self.assertEqual(obj_count, models.storage.count())
