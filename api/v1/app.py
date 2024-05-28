@@ -14,12 +14,17 @@ Classes:
 """
 
 
-from flask import Flask, jsonify
-from models import storage
 from api.v1.views import app_views
+from flask import Flask, jsonify
+from flask_cors import CORS
+from models import storage
 from os import getenv
 
 app = Flask(__name__)
+
+# Define conditions for Cross-origin Resource Sharing
+cors = CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
+
 # Register Blueprint
 app.register_blueprint(app_views, url_prefix='/api/v1')
 
@@ -38,5 +43,5 @@ def return_404(error):
 
 if __name__ == '__main__':
     hostname = getenv('HBNB_API_HOST', '0.0.0.0')
-    portname = getenv('HBNB_API_PORT', 5000)
+    portname = int(getenv('HBNB_API_PORT', 5000))
     app.run(host=hostname, port=portname, threaded=True)
