@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-Defines a new view for handling all default RESTful API actions on User
+"""Defines a new view for handling all default RESTful API actions on User
 objects.
 """
 from flask import jsonify, abort, request
