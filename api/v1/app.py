@@ -1,5 +1,17 @@
 #!/usr/bin/python3
-""" This script starts a Flask application """
+"""
+This script starts the API
+
+Attributes:
+    app: An instance of the Flask class, which is the application object
+
+Functions:
+    teardown_db: Cleans up after each call to API
+    return_404: Handles the 404 error
+
+Classes:
+    None
+"""
 from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
