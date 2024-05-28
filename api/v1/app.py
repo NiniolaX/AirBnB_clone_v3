@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script starts the API
+This script starts the API.
 
 Attributes:
     app: An instance of the Flask class, which is the application object
@@ -12,6 +12,8 @@ Functions:
 Classes:
     None
 """
+
+
 from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
@@ -24,7 +26,7 @@ app.register_blueprint(app_views, url_prefix='/api/v1')
 
 @app.teardown_appcontext
 def teardown_db(exception):
-    """ Cleans up """
+    """ Cleans up after each request """
     storage.close()
 
 
