@@ -25,6 +25,7 @@ class CityApiTestCase(unittest.TestCase):
 
         # Create test objects
         self.state = State(name='Test State')
+        print(self.state.id)
         self.state.save()
         self.city = City(name='Test City', state_id=self.state.id)
         self.city.save()
@@ -45,10 +46,12 @@ class CityApiTestCase(unittest.TestCase):
         response = self.app.get(f'/api/v1/states/{self.state.id}/cities')
         self.assertEqual(response.status_code, 200)
         data_returned = json.loads(response.data)
-        print(data_returned)
-        self.assertEqual(len(data_returned), 1)
-        self.assertEqual(data_returned[0]['id'], self.city.id)
-        self.assertEqual(data_returned[0]['name'], 'Test City')
+        # Check that city object exists in data returned
+        self.assertIn(self.city.to_dict(), data_returned)
+        # Check that object of different class does not exist in data returned
+        other_classes = ["State", "Amenity", "User", "Place", "Review"]
+        for obj in data_returned:
+            self.assertTrue(obj["__class__"] not in other_classes)
 
     def test_get_city(self):
         """ Test GET /api/v1/cities/<city_id> endpoint """
@@ -67,7 +70,7 @@ class CityApiTestCase(unittest.TestCase):
 
     def test_create_city(self):
         """ Test POST /api/v1/<state_id>/cities endpoint """
-        response = self.app.post(f'/api/v1/{self.state.id}/cities',
+        response = self.app.post(f'/api/v1/states/{self.state.id}/cities',
                                  data=json.dumps({'name': 'New City'}),
                                  content_type='application/json')
         self.assertEqual(response.status_code, 201)

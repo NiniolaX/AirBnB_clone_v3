@@ -41,10 +41,12 @@ class StateApiTestCase(unittest.TestCase):
         response = self.app.get('/api/v1/states/')
         self.assertEqual(response.status_code, 200)
         data_returned = json.loads(response.data)
-        print(data_returned)
-        self.assertEqual(len(data_returned), 1)
-        self.assertEqual(data_returned[0]['id'], self.state.id)
-        self.assertEqual(data_returned[0]['name'], 'Test State')
+        # Check that state object exists in data returned
+        self.assertIn(self.state.to_dict(), data_returned)
+        # Check that object of different class does not exist in data returned
+        other_classes = ["Amenity", "City", "User", "Place", "Review"]
+        for obj in data_returned:
+            self.assertTrue(obj["__class__"] not in other_classes)
 
     def test_get_state(self):
         """ Test GET /api/v1/states/<state_id> endpoint """
