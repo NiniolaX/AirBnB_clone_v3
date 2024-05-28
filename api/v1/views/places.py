@@ -2,12 +2,12 @@
 """ Defines a new view for handling all default RESTful API actions on Place
 objects.
 """
-from flask import jsonify, abort, request
 from api.v1.views import app_views
-from models.city import City
-from models.user import User
-from models.place import Place
+from flask import jsonify, abort, request
 from models import storage
+from models.city import City
+from models.place import Place
+from models.user import User
 
 
 @app_views.route('cities/<city_id>/places', strict_slashes=False,
@@ -73,7 +73,8 @@ def create_place(city_id):
     if "name" not in request_data:
         abort(400, description="Missing name")
 
-    new_place = Place(city_id=city_id, **request_data)
+    new_place = Place(**request_data)
+    new_place.city_id = city_id
     new_place.save()
 
     return jsonify(new_place.to_dict()), 201

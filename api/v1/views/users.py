@@ -2,10 +2,10 @@
 """Defines a new view for handling all default RESTful API actions on User
 objects.
 """
-from flask import jsonify, abort, request
 from api.v1.views import app_views
-from models.user import User
+from flask import jsonify, abort, request
 from models import storage
+from models.user import User
 
 
 @app_views.route('/users', strict_slashes=False, methods=['GET'])
