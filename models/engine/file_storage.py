@@ -69,9 +69,9 @@ class FileStorage:
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
 
-    def get(self, cls, id):
+    def get(self, cls, obj_id):
         """ Retrieves an object """
-        if not cls or not id:
+        if not cls or not obj_id:
             return None
 
         from models import storage
@@ -80,7 +80,7 @@ class FileStorage:
         if not cls_objs:
             return None
 
-        obj_key = f'{cls.__name__}.{id}'
+        obj_key = f"{cls.__name__}.{obj_id}"
         obj = cls_objs.get(obj_key)
 
         return obj
