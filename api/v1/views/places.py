@@ -73,8 +73,9 @@ def create_place(city_id):
     if "name" not in request_data:
         abort(400, description="Missing name")
 
+    # Create new Place object
+    request_data['city_id'] = city_id
     new_place = Place(**request_data)
-    new_place.city_id = city_id
     new_place.save()
 
     return jsonify(new_place.to_dict()), 201

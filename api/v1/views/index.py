@@ -23,8 +23,8 @@ def return_stats():
     from models.amenity import Amenity
     models = {"amenities": Amenity, "cities": City, "places": Place,
               "reviews": Review, "states": State, "users": User}
-    stats = {}
+    model_stats = {}
     for key, value in models.items():
-        stats[key] = storage.count(value)
+        model_stats[key] = storage.count(value)
 
-    return jsonify(stats)
+    return jsonify(model_stats)
