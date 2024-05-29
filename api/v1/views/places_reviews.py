@@ -60,18 +60,18 @@ def create_review(place_id):
     try:
         request_data = request.get_json()
     except Exception as e:
-        abort(400, description="Not a JSON")
+        return make_response({"error": "Not a JSON"}, 400)
 
     # Check that user_id was passed and is linked to a User object
     if "user_id" not in request_data:
-        abort(400, description="Missing user_id")
+        return make_response({"error": "Missing user_id"}, 400)
     user = storage.get(User, request_data['user_id'])
     if not user:
         abort(404)
 
     # Check that text was passed
     if "text" not in request_data:
-        abort(400, description="Missing text")
+        return make_response({"error": "Missing text"}, 400)
 
     # Create new place object
     request_data['place_id'] = place_id
@@ -91,7 +91,7 @@ def update_review(review_id):
     try:
         request_data = request.get_json()
     except Exception as e:
-        abort(400, description="Not a JSON")
+        return make_response({"error": "Not a JSON"}, 400)
 
     for key, value in request_data.items():
         ignore_keys = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']

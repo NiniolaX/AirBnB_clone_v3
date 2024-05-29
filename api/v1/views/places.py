@@ -60,18 +60,18 @@ def create_place(city_id):
     try:
         request_data = request.get_json()
     except Exception as e:
-        return make_response({"Error": "Not a JSON"}, 400)
+        return make_response({"error": "Not a JSON"}, 400)
 
     # Check that user_id was passed and is linked to a User object
     if "user_id" not in request_data:
-        return make_response({"Error": "Missing user_id"}, 400)
+        return make_response({"error": "Missing user_id"}, 400)
     user = storage.get(User, request_data['user_id'])
     if not user:
         abort(404)
 
     # Check that name was passed
     if "name" not in request_data:
-        return make_response({"Error": "Missing name"}, 400)
+        return make_response({"error": "Missing name"}, 400)
 
     # Create new Place object
     request_data['city_id'] = city_id
@@ -90,7 +90,7 @@ def update_place(place_id):
     try:
         request_data = request.get_json()
     except Exception as e:
-        return make_response({"Error": "Not a JSON"}, 400)
+        return make_response({"error": "Not a JSON"}, 400)
 
     for key, value in request_data.items():
         if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
