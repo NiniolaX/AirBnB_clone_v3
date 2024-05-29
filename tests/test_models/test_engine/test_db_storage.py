@@ -91,10 +91,10 @@ class TestDBStorage(unittest.TestCase):
     def test_get(self):
         """Test that get returns an object"""
         # Get a storage object
-        obj = max(models.storage.all().values(), key=lambda x: x.created_at)
-        obj_class = obj.__class__
-        # Test that object returned is same as obj
-        self.assertIs(obj, models.storage.get(obj_class, obj.id))
+        state = State(name="Test State")
+        state.save()
+        state_returned = models.storage.get(State, state.id)
+        self.assertIs(state, state_returned)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count_with_class(self):
