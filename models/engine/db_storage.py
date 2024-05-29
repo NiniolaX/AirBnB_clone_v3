@@ -86,7 +86,7 @@ class DBStorage:
         if not cls_objs:
             return None
 
-        obj_key = f'{cls.__name__}.{obj_id}'
+        obj_key = "{}.{}".format(cls.__name__, obj_id)
         obj = cls_objs.get(obj_key)
 
         return obj
